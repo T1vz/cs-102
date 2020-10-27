@@ -14,6 +14,15 @@ def is_prime(n: int) -> bool:
     False
     """
     # PUT YOUR CODE HERE
+    if (n % 2 == 0):
+        for i in range(2,int(n / 2) + 1):
+            if n % i == 0:
+                return False
+    else:
+        for i in range(2,int((n+1)/ 2)):
+            if n % i == 0:
+                return False
+    return True
     pass
 
 
@@ -27,9 +36,21 @@ def gcd(a: int, b: int) -> int:
     1
     """
     # PUT YOUR CODE HERE
+    while a!=0 and b!=0:
+        if a > b:
+            a=a % b
+        else:
+            b=b % a
+    return a+b
     pass
 
-
+def efc(a, b):
+    if b == 0:
+        return 1, 0
+    else:
+        x, y = efc(b, a % b)
+        return y, x - y * (a // b)
+    pass
 def multiplicative_inverse(e: int, phi: int) -> int:
     """
     Euclid's extended algorithm for finding the multiplicative
@@ -39,6 +60,11 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     23
     """
     # PUT YOUR CODE HERE
+    x, y = efc(e, phi)
+    if (x<y):
+        return x % phi
+    else:
+        return y % phi
     pass
 
 
@@ -50,9 +76,11 @@ def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[in
 
     # n = pq
     # PUT YOUR CODE HERE
+    n = p * q
 
     # phi = (p-1)(q-1)
     # PUT YOUR CODE HERE
+    phi = (p - 1) * (q - 1)
 
     # Choose an integer e such that e and phi(n) are coprime
     e = random.randrange(1, phi)
