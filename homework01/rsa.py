@@ -62,6 +62,7 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     23
     """
     # PUT YOUR CODE HERE
+    
     x, y = efc(e, phi)
     
     return x % phi
