@@ -14,6 +14,8 @@ def is_prime(n: int) -> bool:
     False
     """
     # PUT YOUR CODE HERE
+    if (n < 2):
+        return False
     if (n % 2 == 0):
         for i in range(2,int(n / 2) + 1):
             if n % i == 0:
@@ -61,10 +63,9 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     """
     # PUT YOUR CODE HERE
     x, y = efc(e, phi)
-    if (x<y):
-        return x % phi
-    else:
-        return y % phi
+    
+    return x % phi
+    
     pass
 
 
