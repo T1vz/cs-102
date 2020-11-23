@@ -104,6 +104,17 @@ def find_possible_values(grid: List[List[str]], pos: Tuple[int, int]) -> Set[str
     >>> values == {'2', '5', '9'}
     True
     """
+    rowValues = get_row(grid, pos)
+    colValues = get_col(grid, pos)
+    blockValues = get_block(grid, pos)
+    usedValues = rowValues + colValues + blockValues
+    values = []
+    for i in range(1,10):
+        try:
+            value = usedValues.index(str(i))
+        except ValueError:
+            values.append(str(i))
+    return set(values)
     pass
 
 
