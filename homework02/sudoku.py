@@ -43,6 +43,7 @@ def get_row(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     >>> get_row([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']], (2, 0))
     ['.', '8', '9']
     """
+    return [grid[pos[0]][i] for i in range(len(grid[pos[0]]))]
     pass
 
 
@@ -56,6 +57,7 @@ def get_col(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     >>> get_col([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']], (0, 2))
     ['3', '6', '9']
     """
+    return [grid[i][pos[1]] for i in range(len(grid))]
     pass
 
 
@@ -70,8 +72,9 @@ def get_block(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     >>> get_block(grid, (8, 8))
     ['2', '8', '.', '.', '.', '5', '.', '7', '9']
     """
+    startPos = (pos[0]//3*3, pos[1]//3*3)
+    return [grid[startPos[0] + i // 3 ][startPos[1] + i % 3] for i in range(9)]
     pass
-
 
 def find_empty_positions(grid: List[List[str]]) -> Optional[Tuple[int, int]]:
     """ Найти первую свободную позицию в пазле
