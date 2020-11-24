@@ -146,10 +146,23 @@ def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
 def check_solution(solution: List[List[str]]) -> bool:
     """ Если решение solution верно, то вернуть True, в противном случае False """
     # TODO: Add doctests with bad puzzles
+    def check_object(arr: List[str]) -> bool:
+        for i in range(1,10):
+            try:
+                value = arr.index(str(i))
+            except ValueError:
+                return False
+        return True
     for i in range(9):
-        
-    pass
-
+        k = i // 3
+        pos = (i,k + k * 3)
+        checkRow = check_object(get_row(solution, pos))
+        checkCol = check_object(get_col(solution, pos))
+        checkBlock = check_object(get_block(solution, pos))
+        if checkBlock == False or checkCol == False or checkRow == False:
+            return False
+    
+    return True
 
 def generate_sudoku(N: int) -> List[List[str]]:
     """ Генерация судоку заполненного на N элементов
@@ -173,6 +186,7 @@ def generate_sudoku(N: int) -> List[List[str]]:
     >>> check_solution(solution)
     True
     """
+    
     pass
 
 
@@ -185,3 +199,8 @@ if __name__ == '__main__':
             print(f"Puzzle {fname} can't be solved")
         else:
             display(solution)
+            checkSolution = check_solution(solution)
+            if checkSolution:
+                print("Solution is correct")
+            else:
+                print("Ooops")
