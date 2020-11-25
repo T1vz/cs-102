@@ -1,4 +1,5 @@
 from typing import Tuple, List, Set, Optional
+import random
 
 
 def read_sudoku(filename: str) -> List[List[str]]:
@@ -30,7 +31,6 @@ def group(values: List[str], n: int) -> List[List[str]]:
     """
     groupedList = [ [values[x+n*i] for x in range(n)] for i in range(len(values) // n) ]
     return groupedList
-    pass
 
 
 def get_row(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
@@ -44,7 +44,6 @@ def get_row(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     ['.', '8', '9']
     """
     return [grid[pos[0]][i] for i in range(len(grid[pos[0]]))]
-    pass
 
 
 def get_col(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
@@ -58,7 +57,6 @@ def get_col(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     ['3', '6', '9']
     """
     return [grid[i][pos[1]] for i in range(len(grid))]
-    pass
 
 
 def get_block(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
@@ -74,7 +72,6 @@ def get_block(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     """
     startPos = (pos[0]//3*3, pos[1]//3*3)
     return [grid[startPos[0] + i // 3 ][startPos[1] + i % 3] for i in range(9)]
-    pass
 
 def find_empty_positions(grid: List[List[str]]) -> Optional[Tuple[int, int]]:
     """ Найти первую свободную позицию в пазле
@@ -115,7 +112,6 @@ def find_possible_values(grid: List[List[str]], pos: Tuple[int, int]) -> Set[str
         except ValueError:
             values.append(str(i))
     return set(values)
-    pass
 
 
 def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
@@ -186,8 +182,35 @@ def generate_sudoku(N: int) -> List[List[str]]:
     >>> check_solution(solution)
     True
     """
+    coords = [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (1, 0), (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8), (2, 0), (2, 1), (2, 2), (2, 3), (2, 4), (2, 5), (2, 6), (2, 7), (2, 8), (3, 0), (3, 1), (3, 2), (3, 3), (3, 4), (3, 5), (3, 6), (3, 7), (3, 8), (4, 0), (4, 1), (4, 2), (4, 3), (4, 4), (4, 5), (4, 6), (4, 7), (4, 8), (5, 0), (5, 1), (5, 2), (5, 3), (5, 4), (5, 5), (5, 6), (5, 7), (5, 8), (6, 0), (6, 1), (6, 2), (6, 3), (6, 4), (6, 5), (6, 6), (6, 7), (6, 8), (7, 0), (7, 1), (7, 2), (7, 3), (7, 4), (7, 5), (7, 6), (7, 7), (7, 8), (8, 0), (8, 1), (8, 2), (8, 3), (8, 4), (8, 5), (8, 6), (8, 7), (8, 8)]
+    #all coords
+    grid = [['4', '2', '5', '9', '1', '3', '6', '7', '8'], ['9', '1', '3', '6', '7', '8', '4', '2', '5'], ['6', '7', '8', '4', '2', '5', '3', '9', '1'], ['2', '4', '6', '5', '3', '7', '8', '1', '9'], ['5', '3', '7', '8', '9', '1', '2', '6', '4'], ['8', '9', '1', '2', '6', '4', '7', '5', '3'], ['3', '6', '4', '7', '5', '9', '1', '8', '2'], ['7', '8', '9', '1', '4', '2', '5', '3', '6'], ['1', '5', '2', '3', '8', '6', '9', '4', '7']]
+    #typical grid generated with solve() and empty grid
+    needDoku = [['.' for k in range(9)] for j in range(9)]
+    newDoku = []
+    for i in range(3):
+        newCol = []
+        for j in range(3):
+            newCol.append(get_col(grid,(0,j+3*i)))
+        random.shuffle(newCol)
+        for j in range(3):
+            for k in range(9):
+                needDoku[k][j+3*i] = newCol[j][k]
+    for i in range (3):
+        newRow = [[needDoku[j+i*3][k] for k in range(9)] for j in range(3)]
+        random.shuffle(newRow)
+        newDoku.append(newRow[0])
+        newDoku.append(newRow[1])
+        newDoku.append(newRow[2])
     
-    pass
+    if N<0:
+        N=0
+    if N>81:
+        N=81
+    coords = random.sample(coords, 81 - N)
+    for i in range(81-N):
+        newDoku[coords[i][0]][coords[i][1]] = '.'
+    return newDoku
 
 
 if __name__ == '__main__':
