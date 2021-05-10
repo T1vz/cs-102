@@ -2,8 +2,8 @@ import pathlib
 import typing as tp
 
 def update_ref(gitdir: pathlib.Path, ref: tp.Union[str, pathlib.Path], new_value: str) -> None:
-    pathlib.Path(os.path.join(gitdir, path)).touch()
-    f = open(os.path.join(gitdir, path), "w")
+    pathlib.Path(gitdir / ref).touch()
+    f = open(gitdir / ref, "w")
     f.write(new_value)
     f.close()
 
@@ -29,7 +29,7 @@ def resolve_head(gitdir: pathlib.Path) -> tp.Optional[str]:
 
 
 def is_detached(gitdir: pathlib.Path) -> bool:
-    f = open(os.path.join(gitdir, "HEAD"), "r")
+    f = open(gitdir / "HEAD", "r")
     com = f.read()
     f.close()
     if len(com) == 40 and com[:5] != "ref: ":
@@ -38,9 +38,9 @@ def is_detached(gitdir: pathlib.Path) -> bool:
         return False
 
 def get_ref(gitdir: pathlib.Path) -> str:
-    f = open(os.path.join(gitdir, "HEAD"), "r")
+    f = open(gitdir / "HEAD", "r")
     ref = f.read()
     if ref[:5] == 'ref: ':
-        ref = ref[5:] 
+        ref = ref[5:-1] 
     f.close()
     return ref
